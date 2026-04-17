@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown } from "lucide-react";
@@ -21,21 +22,30 @@ export default function HeroSection() {
       className="relative w-full overflow-hidden"
       style={{ height: "100vh", minHeight: "600px" }}
     >
-      {/* Background image with parallax zoom */}
+      {/* Background images with parallax zoom */}
       <motion.div
         className="absolute inset-0 w-full h-full"
         style={{ scale: imageScale }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="https://i.ibb.co/Gfzvxnk2/manali.png"
-          alt="Manali mountains"
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src =
-              "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1920&q=85";
-          }}
-          className="w-full h-full object-cover"
-          style={{ objectPosition: "center 20%", filter: "brightness(1.2)" }}
+        {/* Desktop image */}
+        <Image
+          src="/images/manali.jpg"
+          alt="Manali"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover hidden md:block"
+          style={{ filter: "brightness(1.2)", objectPosition: "center 20%" }}
+        />
+        {/* Mobile image */}
+        <Image
+          src="/images/manali-mobile.jpg"
+          alt="Manali"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover block md:hidden"
+          style={{ filter: "brightness(1.2)", objectPosition: "center top" }}
         />
       </motion.div>
 
@@ -49,13 +59,10 @@ export default function HeroSection() {
         }}
       />
 
-      {/* Light dark overlay — bright and airy */}
+      {/* Light overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "rgba(0,0,0,0.2)",
-          zIndex: 1,
-        }}
+        style={{ background: "rgba(0,0,0,0.2)", zIndex: 1 }}
       />
 
       {/* Centered content */}
@@ -63,7 +70,6 @@ export default function HeroSection() {
         className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
         style={{ y: contentY, opacity: contentOpacity, zIndex: 2 }}
       >
-        {/* Main heading */}
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -74,7 +80,6 @@ export default function HeroSection() {
           Explore Everywhere
         </motion.h1>
 
-        {/* Subtext */}
         <motion.p
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
@@ -84,7 +89,6 @@ export default function HeroSection() {
           From the backwaters of Kerala to the peaks of Kashmir
         </motion.p>
 
-        {/* Single CTA */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}

@@ -141,7 +141,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── DESTINATION COLLAGE ─── */}
-      <section className="py-20 bg-[#000d1a] overflow-hidden relative">
+      <section className="py-20 bg-[#003060] overflow-hidden relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <p className="section-label text-[#BECAE6]">From Kerala, To the World</p>
@@ -183,7 +183,7 @@ export default function HomePage() {
       <BookingSteps />
 
       {/* ─── FINAL CTA — dark ocean blue ─── */}
-      <section className="relative overflow-hidden bg-[#000d1a] py-20">
+      <section className="relative overflow-hidden bg-[#003060] py-20">
         {/* Subtle grain texture overlay */}
         <div
           className="absolute inset-0 opacity-[0.035] pointer-events-none"
