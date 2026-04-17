@@ -16,25 +16,19 @@ export default function HeroSection() {
     const video = videoRef.current;
     if (!video) return;
 
-    const enableScrubbing = () => {
-      // Pause natural playback and hand control to scroll
-      video.pause();
-      video.currentTime = scrollYProgress.get() * video.duration;
-    };
-
-    video.addEventListener("loadedmetadata", enableScrubbing);
-
     const unsub = scrollYProgress.on("change", (progress) => {
-      if (video.readyState >= 1 && video.duration) {
+      if (video.readyState < 1 || !video.duration) return;
+      if (progress === 0) {
+        // Back at top — let it play freely
+        if (video.paused) video.play();
+      } else {
+        // Scrolling — pause and scrub
         if (!video.paused) video.pause();
         video.currentTime = progress * video.duration;
       }
     });
 
-    return () => {
-      unsub();
-      video.removeEventListener("loadedmetadata", enableScrubbing);
-    };
+    return unsub;
   }, [scrollYProgress]);
 
   return (
@@ -48,6 +42,7 @@ export default function HeroSection() {
         <video
           ref={videoRef}
           autoPlay
+          loop
           muted
           playsInline
           preload="auto"
