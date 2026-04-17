@@ -32,11 +32,10 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: visible ? 0 : -80, opacity: visible ? 1 : 0 }}
-        transition={{ duration: 0.35, ease: "easeInOut" }}
-        className="fixed top-0 left-0 right-0 z-50 bg-[#003060]/90 backdrop-blur-sm"
+      <nav
+        className={`fixed top-0 w-full z-50 bg-[#003060]/90 backdrop-blur-sm transition-transform duration-300 ${
+          visible ? "translate-y-0" : "-translate-y-full"
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
@@ -95,7 +94,7 @@ export default function Navbar() {
             <Menu size={24} />
           </button>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Mobile fullscreen overlay */}
       <AnimatePresence>

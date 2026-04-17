@@ -35,7 +35,7 @@ export default function HeroSection() {
               "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1920&q=85";
           }}
           className="w-full h-full object-cover"
-          style={{ objectPosition: "center 30%", filter: "brightness(1.15)" }}
+          style={{ objectPosition: "center 20%", filter: "brightness(1.2)" }}
         />
       </motion.div>
 
