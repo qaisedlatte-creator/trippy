@@ -5,10 +5,11 @@ import { motion, useScroll } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
 export default function HeroSection() {
-  const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: containerRef,
     offset: ["start start", "end start"],
   });
 
@@ -16,33 +17,25 @@ export default function HeroSection() {
     const video = videoRef.current;
     if (!video) return;
 
-    const unsub = scrollYProgress.on("change", (progress) => {
-      if (video.readyState < 1 || !video.duration) return;
-      if (progress === 0) {
-        // Back at top — let it play freely
-        if (video.paused) video.play();
-      } else {
-        // Scrolling — pause and scrub
-        if (!video.paused) video.pause();
-        video.currentTime = progress * video.duration;
-      }
+    // Prevent autoplay
+    video.pause();
+    video.currentTime = 0;
+
+    const unsubscribe = scrollYProgress.on("change", (latest) => {
+      if (!video.duration) return;
+      video.currentTime = latest * video.duration;
     });
 
-    return unsub;
+    return () => unsubscribe();
   }, [scrollYProgress]);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative w-full h-[300vh]"
-    >
+    <div ref={containerRef} className="relative w-full h-[300vh]">
       {/* Sticky viewport container */}
       <div className="sticky top-0 h-screen overflow-hidden">
         {/* Video background */}
         <video
           ref={videoRef}
-          autoPlay
-          loop
           muted
           playsInline
           preload="auto"
@@ -110,6 +103,6 @@ export default function HeroSection() {
           </motion.div>
         </motion.div>
       </div>
-    </section>
+    </div>
   );
 }
