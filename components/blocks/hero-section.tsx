@@ -16,21 +16,24 @@ export default function HeroSection() {
     const video = videoRef.current;
     if (!video) return;
 
-    const scrub = (progress: number) => {
-      if (video.readyState >= 1 && video.duration) {
-        video.currentTime = progress * video.duration;
-      }
+    const enableScrubbing = () => {
+      // Pause natural playback and hand control to scroll
+      video.pause();
+      video.currentTime = scrollYProgress.get() * video.duration;
     };
 
-    // Re-scrub once metadata is available (duration was NaN before this)
-    const onMetadata = () => scrub(scrollYProgress.get());
-    video.addEventListener("loadedmetadata", onMetadata);
+    video.addEventListener("loadedmetadata", enableScrubbing);
 
-    const unsub = scrollYProgress.on("change", scrub);
+    const unsub = scrollYProgress.on("change", (progress) => {
+      if (video.readyState >= 1 && video.duration) {
+        if (!video.paused) video.pause();
+        video.currentTime = progress * video.duration;
+      }
+    });
 
     return () => {
       unsub();
-      video.removeEventListener("loadedmetadata", onMetadata);
+      video.removeEventListener("loadedmetadata", enableScrubbing);
     };
   }, [scrollYProgress]);
 
@@ -44,6 +47,7 @@ export default function HeroSection() {
         {/* Video background */}
         <video
           ref={videoRef}
+          autoPlay
           muted
           playsInline
           preload="auto"
