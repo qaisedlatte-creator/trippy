@@ -1,4 +1,16 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
+    ],
+  },
+  // Allow external images without optimization for hero backgrounds
+  // using <img> tags directly (handled by eslint-disable comments)
+};
 
 export default nextConfig;
