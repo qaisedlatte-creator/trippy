@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ChevronDown, MessageCircle } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -11,9 +11,7 @@ export default function HeroSection() {
     offset: ["start start", "end start"],
   });
 
-  // Subtle zoom: image scales from 1.0 → 1.08 as user scrolls
   const imageScale = useTransform(scrollYProgress, [0, 1], [1.0, 1.08]);
-  // Content fades and rises slightly on scroll
   const contentY = useTransform(scrollYProgress, [0, 0.5], [0, -40]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
@@ -36,16 +34,26 @@ export default function HeroSection() {
             (e.currentTarget as HTMLImageElement).src =
               "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1920&q=85";
           }}
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover"
+          style={{ objectPosition: "center 30%", filter: "brightness(1.15)" }}
         />
       </motion.div>
 
-      {/* Dark gradient overlay — light at top, darker at bottom */}
+      {/* White gradient at top — washes out baked-in "MANALI 2021" text */}
+      <div
+        className="absolute inset-x-0 top-0 pointer-events-none"
+        style={{
+          height: "25%",
+          background: "linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, transparent 100%)",
+          zIndex: 1,
+        }}
+      />
+
+      {/* Light dark overlay — bright and airy */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background:
-            "linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,20,60,0.6) 100%)",
+          background: "rgba(0,0,0,0.2)",
           zIndex: 1,
         }}
       />
@@ -55,16 +63,6 @@ export default function HeroSection() {
         className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
         style={{ y: contentY, opacity: contentOpacity, zIndex: 2 }}
       >
-        {/* Label */}
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="font-space text-white/80 tracking-[0.25em] text-xs sm:text-sm uppercase mb-5"
-        >
-          Kerala&apos;s Travel Experts
-        </motion.p>
-
         {/* Main heading */}
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
@@ -86,32 +84,22 @@ export default function HeroSection() {
           From the backwaters of Kerala to the peaks of Kashmir
         </motion.p>
 
-        {/* CTAs */}
+        {/* Single CTA */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.52 }}
-          className="flex flex-wrap items-center justify-center gap-3"
         >
           <Link
             href="/destinations"
-            className="bg-white hover:bg-white/90 text-[#003060] font-dm font-semibold px-7 py-3 rounded-xl transition-colors duration-200 min-h-[44px] flex items-center"
+            className="bg-white hover:bg-white/90 text-[#003060] font-dm font-semibold px-8 py-3 rounded-full transition-colors duration-200 min-h-[44px] flex items-center"
           >
-            Explore Destinations
+            Plan Your Trip →
           </Link>
-          <a
-            href="https://wa.me/919876543210" // REPLACE WITH REAL NUMBER
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-white border border-white/50 hover:border-white hover:bg-white/10 font-dm font-medium px-7 py-3 rounded-xl transition-all duration-200 min-h-[44px]"
-          >
-            <MessageCircle size={17} />
-            Chat on WhatsApp
-          </a>
         </motion.div>
       </motion.div>
 
-      {/* Scroll chevron — bottom center, bouncing */}
+      {/* Scroll chevron */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

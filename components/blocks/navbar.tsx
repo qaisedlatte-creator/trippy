@@ -14,20 +14,17 @@ const links = [
 ];
 
 export default function Navbar() {
-  const [hidden, setHidden] = useState(false);
-  const [lastY, setLastY] = useState(0);
+  const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => {
-      const y = window.scrollY;
-      setHidden(y > lastY && y > 120);
-      setLastY(y);
+      setVisible(window.scrollY > 80);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [lastY]);
+  }, []);
 
   useEffect(() => {
     setOpen(false);
@@ -37,12 +34,12 @@ export default function Navbar() {
     <>
       <motion.nav
         initial={{ y: -80, opacity: 0 }}
-        animate={{ y: hidden ? -80 : 0, opacity: 1 }}
+        animate={{ y: visible ? 0 : -80, opacity: visible ? 1 : 0 }}
         transition={{ duration: 0.35, ease: "easeInOut" }}
-        className="fixed top-0 left-0 right-0 z-50 bg-transparent"
+        className="fixed top-0 left-0 right-0 z-50 bg-[#003060]/90 backdrop-blur-sm"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          {/* Logo — plain white text only */}
+          {/* Logo */}
           <Link href="/" className="group">
             <span className="font-playfair text-xl font-bold text-white tracking-wide">
               Trippy
