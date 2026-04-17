@@ -208,7 +208,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a
-              href="https://wa.me/919876543210" // REPLACE WITH REAL NUMBER
+              href="https://wa.me/918592803525" // REPLACE WITH REAL NUMBER
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 bg-green-500 hover:bg-green-400 text-white font-dm font-medium px-7 py-3 rounded-xl transition-colors min-h-[44px]"

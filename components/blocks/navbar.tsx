@@ -69,7 +69,7 @@ export default function Navbar() {
           {/* CTA buttons */}
           <div className="hidden md:flex items-center gap-3">
             <a
-              href="https://wa.me/919876543210" // REPLACE WITH REAL NUMBER
+              href="https://wa.me/918592803525" // REPLACE WITH REAL NUMBER
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-white border border-white/50 hover:border-white px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 hover:bg-white/10"
@@ -137,7 +137,7 @@ export default function Navbar() {
                 className="mt-4"
               >
                 <a
-                  href="https://wa.me/919876543210" // REPLACE WITH REAL NUMBER
+                  href="https://wa.me/918592803525" // REPLACE WITH REAL NUMBER
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-white border border-white/40 px-5 py-2.5 rounded-lg text-base min-h-[44px]"

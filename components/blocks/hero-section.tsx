@@ -13,14 +13,25 @@ export default function HeroSection() {
   });
 
   useEffect(() => {
-    return scrollYProgress.on("change", (latest) => {
-      if (videoRef.current) {
-        const duration = videoRef.current.duration;
-        if (duration) {
-          videoRef.current.currentTime = latest * duration;
-        }
+    const video = videoRef.current;
+    if (!video) return;
+
+    const scrub = (progress: number) => {
+      if (video.readyState >= 1 && video.duration) {
+        video.currentTime = progress * video.duration;
       }
-    });
+    };
+
+    // Re-scrub once metadata is available (duration was NaN before this)
+    const onMetadata = () => scrub(scrollYProgress.get());
+    video.addEventListener("loadedmetadata", onMetadata);
+
+    const unsub = scrollYProgress.on("change", scrub);
+
+    return () => {
+      unsub();
+      video.removeEventListener("loadedmetadata", onMetadata);
+    };
   }, [scrollYProgress]);
 
   return (

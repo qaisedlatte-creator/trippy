@@ -41,7 +41,7 @@ export default function Footer() {
                 <FacebookIcon size={16} />
               </a>
               <a
-                href="https://wa.me/919876543210" // REPLACE WITH REAL NUMBER
+                href="https://wa.me/918592803525" // REPLACE WITH REAL NUMBER
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-green-400 hover:text-white transition-all duration-200"
@@ -101,14 +101,14 @@ export default function Footer() {
             <ul className="space-y-4">
               <li>
                 <a
-                  href="https://wa.me/919876543210" // REPLACE WITH REAL NUMBER
+                  href="https://wa.me/918592803525" // REPLACE WITH REAL NUMBER
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-start gap-3 group"
                 >
                   <Phone size={16} className="text-[#2571BC] mt-0.5 shrink-0" />
                   <span className="font-dm text-sm text-white/60 group-hover:text-white transition-colors">
-                    +91 98765 43210{/* REPLACE WITH REAL NUMBER */}
+                    +91 85928 03525{/* REPLACE WITH REAL NUMBER */}
                   </span>
                 </a>
               </li>

@@ -233,7 +233,7 @@ export default function DestinationPage({ params }: Props) {
                       Book Now
                     </Button>
                     <a
-                      href={`https://wa.me/919876543210?text=Hi! I'm interested in the ${destination.name} package. Can you share the exact quote?`} // REPLACE WITH REAL NUMBER
+                      href={`https://wa.me/918592803525?text=Hi! I'm interested in the ${destination.name} package. Can you share the exact quote?`} // REPLACE WITH REAL NUMBER
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 w-full border border-green-400 text-green-600 hover:bg-green-50 font-dm font-medium py-3 rounded-xl transition-colors duration-200"
