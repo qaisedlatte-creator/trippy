@@ -10,7 +10,7 @@ export default function HeroSection() {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end start"],
+    offset: ["start start", "end end"],
   });
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function HeroSection() {
   }, [scrollYProgress]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[300vh]">
+    <div ref={containerRef} className="relative w-full h-[800vh]">
       {/* Sticky viewport container */}
       <div className="sticky top-0 h-screen overflow-hidden">
         {/* Video background */}
