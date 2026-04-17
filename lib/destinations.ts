@@ -353,6 +353,29 @@ export const destinations: Destination[] = [
       { day: 5, title: "Departure", description: "Morning visit to Jewel Changi Airport — a marvel of architecture with indoor waterfall. Transfer for departure flight." },
     ],
   },
+  {
+    id: "alappuzha",
+    slug: "alappuzha",
+    name: "Alappuzha (Alleppey)",
+    region: "Kerala, India",
+    type: "domestic",
+    country: "India",
+    price: 1500,
+    priceLabel: "₹1,500 onwards",
+    image: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=80",
+    heroImage: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1920&q=90",
+    tagline: "The Venice of the East",
+    description: "Alappuzha — nicknamed Alleppey — is Kerala's most iconic backwater destination and the soul of what makes Kerala extraordinary. An overnight houseboat cruise on the emerald Vembanad Lake, with rice paddies on either side, fishermen casting nets at dawn, and the gentle lapping of water against the hull, is unlike anything else in India. This is where Kerala reveals itself most honestly.",
+    bestTime: "October – March",
+    duration: "1N/2D or 2N/3D",
+    type_label: "Backwaters & Houseboat",
+    includes: ["Houseboat Stay", "All Meals on Board", "Canoe Ride", "Transfers", "24/7 Support"],
+    itinerary: [
+      { day: 1, title: "Board the Houseboat", description: "Arrive at Alappuzha from Kochi (1.5 hrs). Board your traditional kettuvallam houseboat at noon. Cruise through narrow canals flanked by coconut palms. Watch village life from the deck — toddy shops, fishing nets, temple gopurams. Sunset on Vembanad Lake. Kerala sadhya dinner on board." },
+      { day: 2, title: "Dawn on the Lake & Canoe Tour", description: "Wake up to mist on the water. Morning tea on deck as the sun rises over Vembanad. Canoe ride through narrow village backwater canals — only a canoe can reach these. Visit a local coir weaving unit. Disembark by noon. Optional: afternoon visit to Krishnapuram Palace or Alappuzha Beach before departure." },
+      { day: 3, title: "Village Walk & Departure (for 2N/3D)", description: "Morning walk through Kuttanad — the rice bowl of Kerala, below sea level. Visit a farm, taste fresh toddy at a local shop (optional). Transfer to Kochi or onward destination." },
+    ],
+  },
 ];
 
 export function getDestinationBySlug(slug: string): Destination | undefined {

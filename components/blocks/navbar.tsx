@@ -14,7 +14,6 @@ const links = [
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [lastY, setLastY] = useState(0);
   const [open, setOpen] = useState(false);
@@ -23,8 +22,7 @@ export default function Navbar() {
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
-      setScrolled(y > 40);
-      setHidden(y > lastY && y > 100);
+      setHidden(y > lastY && y > 120);
       setLastY(y);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -41,23 +39,14 @@ export default function Navbar() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: hidden ? -80 : 0, opacity: 1 }}
         transition={{ duration: 0.35, ease: "easeInOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "glass shadow-lg" : "bg-transparent"
-        }`}
+        className="fixed top-0 left-0 right-0 z-50 bg-transparent"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="bg-[#003060] px-3 py-1.5 rounded-md">
-              <span className="font-playfair text-xl font-bold text-white tracking-wide">
-                Tr
-                <span className="relative inline-block">
-                  <span>i</span>
-                  <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#FFB03A] rounded-full block" style={{top: '-3px'}}/>
-                </span>
-                ppy
-              </span>
-            </div>
+          {/* Logo — plain white text only */}
+          <Link href="/" className="group">
+            <span className="font-playfair text-xl font-bold text-white tracking-wide">
+              Trippy
+            </span>
           </Link>
 
           {/* Desktop Links */}
@@ -66,7 +55,7 @@ export default function Navbar() {
               <Link
                 key={l.href}
                 href={l.href}
-                className={`font-dm text-sm font-medium transition-colors duration-200 relative group ${
+                className={`font-dm text-sm font-medium transition-colors duration-200 relative ${
                   pathname === l.href ? "text-white" : "text-white/70 hover:text-white"
                 }`}
               >
@@ -87,14 +76,14 @@ export default function Navbar() {
               href="https://wa.me/919876543210" // REPLACE WITH REAL NUMBER
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-green-400 border border-green-400/40 hover:border-green-400 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 hover:bg-green-400/10"
+              className="flex items-center gap-1.5 text-white border border-white/50 hover:border-white px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 hover:bg-white/10"
             >
               <MessageCircle size={15} />
               WhatsApp
             </a>
             <Link
               href="/packages"
-              className="bg-[#003060] hover:bg-[#002050] text-white px-4 py-1.5 rounded-md text-sm font-medium transition-colors duration-200 border border-white/20"
+              className="bg-white hover:bg-white/90 text-[#003060] px-4 py-1.5 rounded-md text-sm font-semibold transition-colors duration-200"
             >
               Book Now
             </Link>
@@ -122,9 +111,7 @@ export default function Navbar() {
             className="fixed inset-0 z-[100] bg-[#003060] flex flex-col"
           >
             <div className="flex items-center justify-between px-6 py-5">
-              <Link href="/" className="font-playfair text-2xl font-bold text-white">
-                Trippy
-              </Link>
+              <span className="font-playfair text-2xl font-bold text-white">Trippy</span>
               <button onClick={() => setOpen(false)} className="text-white">
                 <X size={26} />
               </button>
@@ -140,7 +127,7 @@ export default function Navbar() {
                   <Link
                     href={l.href}
                     className={`font-playfair text-4xl font-semibold transition-colors ${
-                      pathname === l.href ? "text-[#FFB03A]" : "text-white hover:text-[#BECAE6]"
+                      pathname === l.href ? "text-[#FFB03A]" : "text-white hover:text-white/70"
                     }`}
                   >
                     {l.label}
@@ -151,13 +138,13 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="mt-4 flex gap-4"
+                className="mt-4"
               >
                 <a
                   href="https://wa.me/919876543210" // REPLACE WITH REAL NUMBER
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-green-400 border border-green-400/40 px-5 py-2.5 rounded-lg text-base"
+                  className="flex items-center gap-2 text-white border border-white/40 px-5 py-2.5 rounded-lg text-base min-h-[44px]"
                 >
                   <MessageCircle size={18} />
                   WhatsApp Us

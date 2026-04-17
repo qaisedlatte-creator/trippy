@@ -1,34 +1,77 @@
 "use client";
 import { motion } from "framer-motion";
-import { Quote } from "lucide-react";
 
-const testimonials = [
+const allTestimonials = [
   {
-    text: "Trippy made our Kashmir trip absolutely magical. The houseboat experience on Dal Lake was something we'll never forget. Everything was handled — we just showed up and enjoyed.",
+    text: "Trippy made our Kashmir trip absolutely magical. The houseboat on Dal Lake was unforgettable.",
     name: "Rahul Menon",
     location: "Dubai, UAE",
+    package: "Kashmir Snow Escape",
     rating: 5,
-    trip: "Kashmir Snow Escape",
   },
   {
-    text: "Best Wayanad weekend package I've found. The jungle resort was stunning and the price was unbeatable from Kochi. Worth every rupee — already planning our next trip.",
+    text: "Best Wayanad weekend package. The jungle resort was stunning and price was unbeatable from Kochi.",
     name: "Priya Krishnan",
     location: "Bangalore",
+    package: "Wayanad Weekend",
     rating: 5,
-    trip: "Wayanad Weekend",
   },
   {
-    text: "Bali was a dream come true. Every detail was handled perfectly — from the villa in Seminyak to the Mt. Batur sunrise trek. Trippy really understands what travelers want.",
+    text: "Bali was a dream. Every detail handled perfectly — from Seminyak villa to Mt. Batur sunrise trek.",
     name: "Arjun Suresh",
     location: "Kochi, Kerala",
+    package: "Bali Soul Journey",
     rating: 5,
-    trip: "Bali Soul Journey",
+  },
+  {
+    text: "Thailand trip was flawless. Trippy handled everything — flights, hotels, and transfers.",
+    name: "Fathima Nair",
+    location: "Kozhikode",
+    package: "Thailand Adventure",
+    rating: 5,
+  },
+  {
+    text: "Sar Pass trek was the experience of a lifetime. The team was responsive via WhatsApp throughout.",
+    name: "Vishnu Raj",
+    location: "Thrissur",
+    package: "Sar Pass Trek",
+    rating: 5,
+  },
+  {
+    text: "Maldives for our honeymoon — water villa, snorkeling, sunset dinner. Pure perfection.",
+    name: "Anjali & Deepak",
+    location: "Kochi",
+    package: "Maldives Luxury Retreat",
+    rating: 5,
+  },
+  {
+    text: "Vietnam in 8 days — Ha Long Bay, Hoi An, Ho Chi Minh. Trippy nailed every single detail.",
+    name: "Mohammed Shafeeq",
+    location: "Calicut",
+    package: "Vietnam Explorer",
+    rating: 5,
+  },
+  {
+    text: "Alappuzha houseboat overnight was the most peaceful experience I've ever had. Highly recommend.",
+    name: "Sreelakshmi T.",
+    location: "Bangalore",
+    package: "Alappuzha Backwaters",
+    rating: 5,
+  },
+  {
+    text: "Singapore with family — Universal Studios, Gardens by the Bay, everything sorted perfectly.",
+    name: "Rajan Pillai",
+    location: "Abu Dhabi",
+    package: "Singapore Family Tour",
+    rating: 5,
   },
 ];
 
+type Testimonial = typeof allTestimonials[0];
+
 function StarRating({ count }: { count: number }) {
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-0.5">
       {[...Array(count)].map((_, i) => (
         <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#FFB03A">
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -38,46 +81,68 @@ function StarRating({ count }: { count: number }) {
   );
 }
 
-export default function Testimonials() {
+function TestimonialCard({ t }: { t: Testimonial }) {
   return (
-    <section className="bg-[#003060] py-20">
+    <div className="bg-white rounded-3xl p-6 shadow-md mb-4 flex flex-col gap-3">
+      <StarRating count={t.rating} />
+      <p className="font-dm text-gray-700 text-sm leading-relaxed">
+        &ldquo;{t.text}&rdquo;
+      </p>
+      <div>
+        <p className="font-dm text-sm font-semibold text-[#003060]">{t.name}</p>
+        <p className="font-dm text-xs text-gray-400 mt-0.5">{t.location} · {t.package}</p>
+      </div>
+    </div>
+  );
+}
+
+interface ColumnProps {
+  testimonials: Testimonial[];
+  duration: number;
+  reverse?: boolean;
+  className?: string;
+}
+
+function ScrollingColumn({ testimonials, duration, reverse = false, className = "" }: ColumnProps) {
+  const doubled = [...testimonials, ...testimonials];
+
+  return (
+    <div
+      className={`overflow-hidden relative flex-1 min-w-0 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)] ${className}`}
+    >
+      <motion.div
+        animate={{ y: reverse ? ["0%", "-50%"] : ["-50%", "0%"] }}
+        transition={{ duration, repeat: Infinity, ease: "linear", repeatType: "loop" }}
+        className="flex flex-col"
+      >
+        {doubled.map((t, i) => (
+          <TestimonialCard key={i} t={t} />
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
+export default function Testimonials() {
+  const col1 = allTestimonials.slice(0, 3);
+  const col2 = allTestimonials.slice(3, 6);
+  const col3 = allTestimonials.slice(6, 9);
+
+  return (
+    <section className="bg-[#003060] py-20 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
-          <p className="section-label text-[#BECAE6]">What Travelers Say</p>
-          <h2 className="font-playfair text-3xl md:text-4xl font-bold text-white mt-2">
+          <p className="section-label text-[#BECAE6] mb-2">What Travelers Say</p>
+          <h2 className="font-playfair text-3xl md:text-4xl font-bold text-white">
             Real Stories, Real Journeys
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((t, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.12 }}
-              className="bg-white rounded-2xl p-7 shadow-lg flex flex-col gap-4 relative overflow-hidden"
-            >
-              <Quote size={40} className="text-[#BECAE6]/40 absolute top-4 right-4" />
-              <StarRating count={t.rating} />
-              <p className="font-dm text-gray-700 text-base leading-relaxed relative z-10">
-                &ldquo;{t.text}&rdquo;
-              </p>
-              <div className="pt-2 border-t border-gray-100 flex items-center gap-3">
-                {/* Minimal abstract avatar — no face/letter */}
-                <div className="w-10 h-10 rounded-full bg-[#BECAE6] flex items-center justify-center shrink-0">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="8" r="4" stroke="#003060" strokeWidth="1.5" />
-                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#003060" strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="font-dm text-sm font-semibold text-[#003060]">{t.name}</p>
-                  <p className="font-dm text-xs text-gray-400">{t.location} · {t.trip}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+
+        {/* Columns — show 1 on mobile, 3 on desktop */}
+        <div className="flex gap-4 h-[520px]">
+          <ScrollingColumn testimonials={col1} duration={18} />
+          <ScrollingColumn testimonials={col2} duration={22} className="hidden md:flex" />
+          <ScrollingColumn testimonials={col3} duration={15} reverse className="hidden md:flex" />
         </div>
       </div>
     </section>

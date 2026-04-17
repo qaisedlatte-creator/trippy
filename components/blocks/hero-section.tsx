@@ -1,145 +1,128 @@
 "use client";
-import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
-import SearchBar from "./search-bar";
-
-const Globe3D = dynamic(() => import("./globe-3d"), { ssr: false });
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ChevronDown, MessageCircle } from "lucide-react";
 
 export default function HeroSection() {
-  const [loaded, setLoaded] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
 
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
+  // Subtle zoom: image scales from 1.0 → 1.08 as user scrolls
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.0, 1.08]);
+  // Content fades and rises slightly on scroll
+  const contentY = useTransform(scrollYProgress, [0, 0.5], [0, -40]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
   return (
-    <section className="relative w-full h-screen min-h-[600px] flex flex-col items-center justify-center overflow-hidden">
-      {/* Background image */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=85"
-        alt="Hero background"
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ zIndex: 0 }}
-      />
+    <section
+      ref={sectionRef}
+      className="relative w-full overflow-hidden"
+      style={{ height: "100vh", minHeight: "600px" }}
+    >
+      {/* Background image with parallax zoom */}
+      <motion.div
+        className="absolute inset-0 w-full h-full"
+        style={{ scale: imageScale }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://i.ibb.co/Gfzvxnk2/manali.png"
+          alt="Manali mountains"
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src =
+              "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1920&q=85";
+          }}
+          className="w-full h-full object-cover object-center"
+        />
+      </motion.div>
 
-      {/* Dark gradient overlay */}
+      {/* Dark gradient overlay — light at top, darker at bottom */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          background: "linear-gradient(to top, rgba(0,30,60,0.92) 0%, rgba(0,30,60,0.6) 50%, rgba(0,20,50,0.3) 100%)",
+          background:
+            "linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,20,60,0.6) 100%)",
           zIndex: 1,
         }}
       />
 
-      {/* Giant background word */}
-      <div
-        className="absolute inset-0 flex items-center justify-center select-none pointer-events-none"
-        style={{ zIndex: 2 }}
-      >
-        <span
-          className="font-playfair font-black text-white uppercase tracking-tight"
-          style={{
-            fontSize: "clamp(100px, 22vw, 280px)",
-            opacity: 0.07,
-            letterSpacing: "-0.05em",
-          }}
-        >
-          TRIPPY
-        </span>
-      </div>
-
-      {/* 3D Globe — right side */}
-      <div
-        className="absolute right-0 top-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[560px] md:h-[560px] lg:w-[680px] lg:h-[680px] pointer-events-none"
-        style={{ zIndex: 3, opacity: 0.45 }}
-      >
-        <Globe3D className="w-full h-full" />
-      </div>
-
-      {/* Hero content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col items-start">
-        {loaded && (
-          <>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="section-label text-[#BECAE6] mb-3"
-            >
-              Kerala&apos;s Premier Travel Agency
-            </motion.p>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="font-playfair text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight max-w-3xl"
-            >
-              Kerala&apos;s Gateway
-              <br />
-              <span className="italic text-[#BECAE6]">to the World</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
-              className="font-dm text-lg md:text-xl text-white/70 mt-5 max-w-lg leading-relaxed"
-            >
-              From the backwaters of Kerala to the beaches of Bali.
-              Curated journeys, transparent pricing, local expertise.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.48 }}
-              className="flex flex-wrap items-center gap-3 mt-8"
-            >
-              <Link
-                href="/destinations"
-                className="bg-[#003060] hover:bg-[#002050] text-white font-dm font-medium px-7 py-3 rounded-xl transition-colors duration-200 border border-white/20"
-              >
-                Explore Destinations
-              </Link>
-              <Link
-                href="/packages"
-                className="text-white border border-white/40 hover:border-white/80 hover:bg-white/10 font-dm font-medium px-7 py-3 rounded-xl transition-all duration-200"
-              >
-                View Packages
-              </Link>
-            </motion.div>
-          </>
-        )}
-      </div>
-
-      {/* Search bar floating at bottom */}
+      {/* Centered content */}
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.7 }}
-        className="absolute bottom-8 left-0 right-0 z-10 max-w-5xl mx-auto px-4 sm:px-6 w-full"
+        className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
+        style={{ y: contentY, opacity: contentOpacity, zIndex: 2 }}
       >
-        <SearchBar />
+        {/* Label */}
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="font-space text-white/80 tracking-[0.25em] text-xs sm:text-sm uppercase mb-5"
+        >
+          Kerala&apos;s Travel Experts
+        </motion.p>
+
+        {/* Main heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, delay: 0.22 }}
+          className="font-playfair font-bold text-white leading-[1.05] mb-5"
+          style={{ fontSize: "clamp(42px, 8vw, 88px)" }}
+        >
+          Explore Everywhere
+        </motion.h1>
+
+        {/* Subtext */}
+        <motion.p
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.38 }}
+          className="font-dm text-white/80 text-base sm:text-lg md:text-xl max-w-xl leading-relaxed mb-10"
+        >
+          From the backwaters of Kerala to the peaks of Kashmir
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.52 }}
+          className="flex flex-wrap items-center justify-center gap-3"
+        >
+          <Link
+            href="/destinations"
+            className="bg-white hover:bg-white/90 text-[#003060] font-dm font-semibold px-7 py-3 rounded-xl transition-colors duration-200 min-h-[44px] flex items-center"
+          >
+            Explore Destinations
+          </Link>
+          <a
+            href="https://wa.me/919876543210" // REPLACE WITH REAL NUMBER
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-white border border-white/50 hover:border-white hover:bg-white/10 font-dm font-medium px-7 py-3 rounded-xl transition-all duration-200 min-h-[44px]"
+          >
+            <MessageCircle size={17} />
+            Chat on WhatsApp
+          </a>
+        </motion.div>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* Scroll chevron — bottom center, bouncing */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-24 right-6 md:right-10 z-10 flex flex-col items-center gap-2"
+        transition={{ delay: 1.1 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1"
       >
-        <span className="font-dm text-xs text-white/40 rotate-90 mb-2">SCROLL</span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ChevronDown size={20} className="text-white/50" />
+          <ChevronDown size={28} className="text-white/60" />
         </motion.div>
       </motion.div>
     </section>

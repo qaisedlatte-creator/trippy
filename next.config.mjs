@@ -7,10 +7,13 @@ const nextConfig = {
         hostname: "images.unsplash.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "i.ibb.co",
+        pathname: "/**",
+      },
     ],
   },
-  // Allow external images without optimization for hero backgrounds
-  // using <img> tags directly (handled by eslint-disable comments)
 };
 
 export default nextConfig;
