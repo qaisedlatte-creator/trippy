@@ -1,33 +1,39 @@
 "use client";
 import Link from "next/link";
 import { useRef, useEffect } from "react";
-import { motion, useScroll } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    const container = containerRef.current;
+    if (!video || !container) return;
 
-    // Prevent autoplay
     video.pause();
     video.currentTime = 0;
 
-    const unsubscribe = scrollYProgress.on("change", (latest) => {
-      if (!video.duration) return;
-      video.currentTime = latest * video.duration;
-    });
+    const handleScroll = () => {
+      const containerTop = container.getBoundingClientRect().top;
+      const containerHeight = container.offsetHeight;
+      const viewportHeight = window.innerHeight;
 
-    return () => unsubscribe();
-  }, [scrollYProgress]);
+      const scrolled = -containerTop;
+      const totalScrollable = containerHeight - viewportHeight;
+
+      const progress = Math.min(Math.max(scrolled / totalScrollable, 0), 1);
+
+      if (video.duration) {
+        video.currentTime = progress * video.duration;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div ref={containerRef} className="relative w-full h-[800vh]">
