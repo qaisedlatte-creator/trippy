@@ -127,15 +127,16 @@ export default function ScrollAnimation({
   }, []);
 
   /**
-   * Draw image to canvas with contain behavior (like CSS object-fit: contain)
-   * Fits entire image within canvas without any cropping or zooming
-   * Image will be fully visible, may have letterboxing on sides/top/bottom
+   * Draw image to canvas - smart fit based on orientation
+   * Portrait images (mobile): use cover to fill vertical screen
+   * Landscape images (desktop): use contain to show full frame
    */
-  const drawContain = (
+  const drawFrame = (
     ctx: CanvasRenderingContext2D,
     img: HTMLImageElement,
     canvasWidth: number,
-    canvasHeight: number
+    canvasHeight: number,
+    useCover: boolean // true for mobile portrait, false for desktop landscape
   ) => {
     const imgRatio = img.width / img.height;
     const canvasRatio = canvasWidth / canvasHeight;
@@ -145,18 +146,32 @@ export default function ScrollAnimation({
       offsetX: number,
       offsetY: number;
 
-    if (imgRatio > canvasRatio) {
-      // Image is wider than canvas - fit by width, letterbox vertically
-      drawWidth = canvasWidth;
-      drawHeight = canvasWidth / imgRatio;
-      offsetX = 0;
-      offsetY = (canvasHeight - drawHeight) / 2;
+    if (useCover) {
+      // Portrait mode: cover to fill screen (crop edges if needed)
+      if (imgRatio > canvasRatio) {
+        drawHeight = canvasHeight;
+        drawWidth = imgRatio * canvasHeight;
+        offsetX = (canvasWidth - drawWidth) / 2;
+        offsetY = 0;
+      } else {
+        drawWidth = canvasWidth;
+        drawHeight = canvasWidth / imgRatio;
+        offsetX = 0;
+        offsetY = (canvasHeight - drawHeight) / 2;
+      }
     } else {
-      // Image is taller than canvas - fit by height, letterbox horizontally
-      drawHeight = canvasHeight;
-      drawWidth = imgRatio * canvasHeight;
-      offsetX = (canvasWidth - drawWidth) / 2;
-      offsetY = 0;
+      // Landscape mode: contain to show full image (letterbox)
+      if (imgRatio > canvasRatio) {
+        drawWidth = canvasWidth;
+        drawHeight = canvasWidth / imgRatio;
+        offsetX = 0;
+        offsetY = (canvasHeight - drawHeight) / 2;
+      } else {
+        drawHeight = canvasHeight;
+        drawWidth = imgRatio * canvasHeight;
+        offsetX = (canvasWidth - drawWidth) / 2;
+        offsetY = 0;
+      }
     }
 
     ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
@@ -187,8 +202,9 @@ export default function ScrollAnimation({
     const height = canvas.height / dpr;
 
     ctx.clearRect(0, 0, width, height);
-    drawContain(ctx, framesRef.current[clampedIndex], width, height);
-  }, [isLoaded, totalFrames]);
+    // Mobile uses cover (portrait frames), desktop uses contain (landscape frames)
+    drawFrame(ctx, framesRef.current[clampedIndex], width, height, isMobile);
+  }, [isLoaded, totalFrames, isMobile]);
 
   /**
    * Main animation loop
@@ -295,48 +311,48 @@ export default function ScrollAnimation({
             <h1
               className="font-playfair font-bold text-white leading-tight mb-4"
               style={{
-                fontSize: "clamp(48px, 10vw, 96px)",
+                fontSize: "clamp(42px, 8vw, 80px)",
                 textShadow: "0 2px 20px rgba(0,0,0,0.5)",
               }}
             >
-              Explore Everywhere
+              Trip Scanner
             </h1>
 
             {/* Subtext */}
             <p
               className="font-dm text-white/90 max-w-xl leading-relaxed mb-8"
               style={{
-                fontSize: "clamp(16px, 2.5vw, 20px)",
+                fontSize: "clamp(14px, 2vw, 18px)",
                 textShadow: "0 1px 10px rgba(0,0,0,0.5)",
               }}
             >
-              From the backwaters of Kerala to the peaks of Kashmir
+              Scan the horizon, discover your next adventure
             </p>
 
             {/* CTA Button */}
             <a
               href="/destinations"
-              className="bg-white hover:bg-white/95 text-[#003060] font-dm font-semibold px-10 py-4 rounded-full transition-all duration-300 min-h-[52px] flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105"
+              className="bg-white hover:bg-white/95 text-[#003060] font-dm font-semibold px-8 py-3 rounded-full transition-all duration-300 min-h-[48px] flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105"
               style={{
-                fontSize: "clamp(14px, 2vw, 16px)",
+                fontSize: "clamp(13px, 2vw, 15px)",
               }}
             >
-              Plan Your Trip
-              <ChevronDown size={18} className="-rotate-90" />
+              Start Scanning
+              <ChevronDown size={16} className="-rotate-90" />
             </a>
           </div>
 
           {/* Scroll indicator */}
           <div
-            className={`absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 transition-opacity duration-700 ${
+            className={`absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 transition-opacity duration-700 ${
               isLoaded ? "opacity-100" : "opacity-0"
             }`}
           >
-            <span className="text-white/60 text-xs tracking-widest uppercase font-dm">
-              Scroll to explore
+            <span className="text-white/50 text-[10px] tracking-[0.2em] uppercase font-dm">
+              Scroll
             </span>
             <div className="animate-bounce">
-              <ChevronDown size={32} className="text-white/70" />
+              <ChevronDown size={24} className="text-white/50" />
             </div>
           </div>
         </div>
