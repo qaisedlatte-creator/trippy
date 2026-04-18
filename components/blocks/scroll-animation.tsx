@@ -127,10 +127,11 @@ export default function ScrollAnimation({
   }, []);
 
   /**
-   * Draw image to canvas with cover behavior (like CSS object-fit: cover)
-   * Maintains aspect ratio while filling entire canvas
+   * Draw image to canvas with contain behavior (like CSS object-fit: contain)
+   * Fits entire image within canvas without any cropping or zooming
+   * Image will be fully visible, may have letterboxing on sides/top/bottom
    */
-  const drawCover = (
+  const drawContain = (
     ctx: CanvasRenderingContext2D,
     img: HTMLImageElement,
     canvasWidth: number,
@@ -145,17 +146,17 @@ export default function ScrollAnimation({
       offsetY: number;
 
     if (imgRatio > canvasRatio) {
-      // Image is wider than canvas - fit by height, center horizontally
-      drawHeight = canvasHeight;
-      drawWidth = imgRatio * canvasHeight;
-      offsetX = (canvasWidth - drawWidth) / 2;
-      offsetY = 0;
-    } else {
-      // Image is taller than canvas - fit by width, center vertically
+      // Image is wider than canvas - fit by width, letterbox vertically
       drawWidth = canvasWidth;
       drawHeight = canvasWidth / imgRatio;
       offsetX = 0;
       offsetY = (canvasHeight - drawHeight) / 2;
+    } else {
+      // Image is taller than canvas - fit by height, letterbox horizontally
+      drawHeight = canvasHeight;
+      drawWidth = imgRatio * canvasHeight;
+      offsetX = (canvasWidth - drawWidth) / 2;
+      offsetY = 0;
     }
 
     ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
@@ -186,7 +187,7 @@ export default function ScrollAnimation({
     const height = canvas.height / dpr;
 
     ctx.clearRect(0, 0, width, height);
-    drawCover(ctx, framesRef.current[clampedIndex], width, height);
+    drawContain(ctx, framesRef.current[clampedIndex], width, height);
   }, [isLoaded, totalFrames]);
 
   /**
