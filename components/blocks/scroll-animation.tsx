@@ -5,12 +5,16 @@ import { ChevronDown } from "lucide-react";
 
 interface ScrollAnimationProps {
   totalFrames?: number;
-  frameFolder?: string;
+  desktopFrameFolder?: string;
+  mobileFrameFolder?: string;
+  mobileBreakpoint?: number; // px - screens below this use mobile frames
 }
 
 export default function ScrollAnimation({
   totalFrames = 40,
-  frameFolder = "/frames",
+  desktopFrameFolder = "/frames",
+  mobileFrameFolder = "/frames-mobile",
+  mobileBreakpoint = 768, // md breakpoint - matches Tailwind
 }: ScrollAnimationProps) {
   // Canvas ref for rendering frames
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,25 +30,39 @@ export default function ScrollAnimation({
   const targetFrameRef = useRef(0);
   // Loading state
   const [isLoaded, setIsLoaded] = useState(false);
+  // Track if currently on mobile (for frame folder selection)
+  const [isMobile, setIsMobile] = useState(false);
 
   // Easing factor - lower = smoother but more lag, higher = more responsive but potentially jittery
   const EASING = 0.15;
 
   /**
    * Generate frame URL from index (0-based)
+   * Uses mobile or desktop folder based on screen size
    * Frames named: ezgif-frame-001.jpg to ezgif-frame-040.jpg
    */
   const getFrameUrl = useCallback(
     (index: number): string => {
       const padded = String(index + 1).padStart(3, "0");
-      return `${frameFolder}/ezgif-frame-${padded}.jpg`;
+      const folder = isMobile ? mobileFrameFolder : desktopFrameFolder;
+      return `${folder}/ezgif-frame-${padded}.jpg`;
     },
-    [frameFolder]
+    [isMobile, mobileFrameFolder, desktopFrameFolder]
   );
 
   /**
+   * Detect mobile/desktop on mount and resize
+   */
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < mobileBreakpoint);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, [mobileBreakpoint]);
+
+  /**
    * Preload all frames before animation starts
-   * Returns promise that resolves when all frames loaded
+   * Reloads when screen size crosses mobile breakpoint (different frames)
    */
   useEffect(() => {
     let mounted = true;
@@ -69,7 +87,7 @@ export default function ScrollAnimation({
         if (mounted) {
           framesRef.current = loaded;
           setIsLoaded(true);
-          console.log(`✓ Loaded ${loaded.length} frames`);
+          console.log(`✓ Loaded ${loaded.length} frames for ${isMobile ? "mobile" : "desktop"}`);
         }
       } catch (error) {
         console.error("Failed to preload frames:", error);
@@ -81,9 +99,10 @@ export default function ScrollAnimation({
     return () => {
       mounted = false;
       framesRef.current = [];
+      setIsLoaded(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalFrames, frameFolder]);
+  }, [totalFrames, isMobile]);
 
   /**
    * Calculate scroll progress (0 to 1) through sticky container
