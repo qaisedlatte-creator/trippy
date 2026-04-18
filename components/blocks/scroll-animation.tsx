@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { ChevronDown } from "lucide-react";
 
 interface ScrollAnimationProps {
@@ -12,27 +12,39 @@ export default function ScrollAnimation({
   totalFrames = 40,
   frameFolder = "/frames",
 }: ScrollAnimationProps) {
+  // Canvas ref for rendering frames
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // Outer container ref for scroll progress calculation
   const containerRef = useRef<HTMLDivElement>(null);
+  // Preloaded frames stored in ref to avoid re-renders
   const framesRef = useRef<HTMLImageElement[]>([]);
+  // Animation frame ID for cleanup
   const rafRef = useRef<number>(0);
+  // Current smoothed frame index (mutable, no re-render)
   const currentFrameRef = useRef(0);
+  // Target frame from scroll position
   const targetFrameRef = useRef(0);
+  // Loading state
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Easing factor for smooth animation (0.05-0.3 recommended)
+  // Easing factor - lower = smoother but more lag, higher = more responsive but potentially jittery
   const EASING = 0.15;
 
   /**
-   * Generate frame URL from index
+   * Generate frame URL from index (0-based)
+   * Frames named: ezgif-frame-001.jpg to ezgif-frame-040.jpg
    */
-  const getFrameUrl = (index: number): string => {
-    const padded = String(index + 1).padStart(3, "0");
-    return `${frameFolder}/ezgif-frame-${padded}.jpg`;
-  };
+  const getFrameUrl = useCallback(
+    (index: number): string => {
+      const padded = String(index + 1).padStart(3, "0");
+      return `${frameFolder}/ezgif-frame-${padded}.jpg`;
+    },
+    [frameFolder]
+  );
 
   /**
-   * Preload all frames
+   * Preload all frames before animation starts
+   * Returns promise that resolves when all frames loaded
    */
   useEffect(() => {
     let mounted = true;
@@ -41,7 +53,8 @@ export default function ScrollAnimation({
       return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = () => resolve(img);
-        img.onerror = () => reject(new Error(`Failed to load frame ${index + 1}`));
+        img.onerror = () =>
+          reject(new Error(`Failed to load frame ${index + 1}`));
         img.src = getFrameUrl(index);
       });
     };
@@ -73,9 +86,11 @@ export default function ScrollAnimation({
   }, [totalFrames, frameFolder]);
 
   /**
-   * Calculate scroll progress through sticky container
+   * Calculate scroll progress (0 to 1) through sticky container
+   * 0 = top of container at viewport top
+   * 1 = bottom of container at viewport bottom
    */
-  const getScrollProgress = (): number => {
+  const getScrollProgress = useCallback((): number => {
     const container = containerRef.current;
     if (!container) return 0;
 
@@ -84,80 +99,106 @@ export default function ScrollAnimation({
     const viewportHeight = window.innerHeight;
     const scrollDistance = containerHeight - viewportHeight;
 
+    // Container shorter than viewport (edge case)
     if (scrollDistance <= 0) return 0.5;
 
+    // How far we've scrolled past the container top
     const scrolled = -rect.top;
     return Math.max(0, Math.min(1, scrolled / scrollDistance));
-  };
+  }, []);
 
   /**
-   * Draw frame to canvas with cover behavior
+   * Draw image to canvas with cover behavior (like CSS object-fit: cover)
+   * Maintains aspect ratio while filling entire canvas
    */
-  const drawFrame = (ctx: CanvasRenderingContext2D, img: HTMLImageElement) => {
-    const canvas = ctx.canvas;
-    const canvasWidth = canvas.clientWidth;
-    const canvasHeight = canvas.clientHeight;
-
+  const drawCover = (
+    ctx: CanvasRenderingContext2D,
+    img: HTMLImageElement,
+    canvasWidth: number,
+    canvasHeight: number
+  ) => {
     const imgRatio = img.width / img.height;
     const canvasRatio = canvasWidth / canvasHeight;
 
-    let drawWidth: number, drawHeight: number, offsetX: number, offsetY: number;
+    let drawWidth: number,
+      drawHeight: number,
+      offsetX: number,
+      offsetY: number;
 
     if (imgRatio > canvasRatio) {
-      // Image is wider - fit by height
+      // Image is wider than canvas - fit by height, center horizontally
       drawHeight = canvasHeight;
       drawWidth = imgRatio * canvasHeight;
       offsetX = (canvasWidth - drawWidth) / 2;
       offsetY = 0;
     } else {
-      // Image is taller - fit by width
+      // Image is taller than canvas - fit by width, center vertically
       drawWidth = canvasWidth;
       drawHeight = canvasWidth / imgRatio;
       offsetX = 0;
       offsetY = (canvasHeight - drawHeight) / 2;
     }
 
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
   };
 
   /**
-   * Animation loop
+   * Render current frame to canvas
+   * Called every animation frame
    */
-  const animate = () => {
+  const renderToCanvas = useCallback(() => {
     const canvas = canvasRef.current;
-    if (!canvas || !isLoaded || framesRef.current.length === 0) {
+    if (!canvas || !isLoaded || framesRef.current.length === 0) return;
+
+    const ctx = canvas.getContext("2d", {
+      alpha: false, // No transparency = better performance
+      desynchronized: true, // Lower latency for scroll-synced rendering
+    });
+
+    if (!ctx) return;
+
+    // Get smoothed frame index
+    const frameIndex = Math.round(currentFrameRef.current);
+    const clampedIndex = Math.max(0, Math.min(totalFrames - 1, frameIndex));
+
+    // Clear and draw
+    const dpr = window.devicePixelRatio || 1;
+    const width = canvas.width / dpr;
+    const height = canvas.height / dpr;
+
+    ctx.clearRect(0, 0, width, height);
+    drawCover(ctx, framesRef.current[clampedIndex], width, height);
+  }, [isLoaded, totalFrames]);
+
+  /**
+   * Main animation loop
+   * Updates scroll target, applies easing, renders frame
+   */
+  const animate = useCallback(() => {
+    if (!isLoaded) {
       rafRef.current = requestAnimationFrame(animate);
       return;
     }
 
-    // Get target frame from scroll position
+    // Get target frame from current scroll position
     const progress = getScrollProgress();
     targetFrameRef.current = progress * (totalFrames - 1);
 
-    // Apply easing for smooth transitions
+    // Linear interpolation for smooth transitions
     currentFrameRef.current +=
       (targetFrameRef.current - currentFrameRef.current) * EASING;
 
-    // Draw current frame (rounded to nearest)
-    const frameIndex = Math.round(currentFrameRef.current);
-    const clampedIndex = Math.max(0, Math.min(totalFrames - 1, frameIndex));
-    const ctx = canvas.getContext("2d", {
-      alpha: false,
-      desynchronized: true,
-    });
-
-    if (ctx) {
-      drawFrame(ctx, framesRef.current[clampedIndex]);
-    }
+    // Render the frame
+    renderToCanvas();
 
     rafRef.current = requestAnimationFrame(animate);
-  };
+  }, [isLoaded, getScrollProgress, totalFrames, renderToCanvas]);
 
   /**
-   * Handle canvas resize for DPI
+   * Handle canvas resize - set internal resolution to match display
+   * Accounts for device pixel ratio (Retina displays)
    */
-  const handleResize = () => {
+  const handleResize = useCallback(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
@@ -165,16 +206,18 @@ export default function ScrollAnimation({
     const dpr = window.devicePixelRatio || 1;
     const rect = container.getBoundingClientRect();
 
+    // Set actual canvas buffer size
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
 
+    // Scale context to match
     const ctx = canvas.getContext("2d");
     if (ctx) {
       ctx.scale(dpr, dpr);
     }
-  };
+  }, []);
 
-  // Initialize and start animation
+  // Initialize animation loop
   useEffect(() => {
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -184,64 +227,100 @@ export default function ScrollAnimation({
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(rafRef.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoaded]);
+  }, [handleResize, animate]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[400vh]">
-      {/* Sticky viewport container */}
-      <div className="sticky top-0 h-screen overflow-hidden bg-black">
-        {/* Loading state */}
-        {!isLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center z-10 bg-black">
-            <p className="text-white/50 font-dm text-sm">Loading...</p>
+    <>
+      {/*
+        Outer scroll container
+        Height determines how long the scroll animation lasts
+        300vh = 3 viewport heights of scrolling to play all 40 frames
+      */}
+      <div ref={containerRef} className="relative w-full h-[300vh]">
+        {/*
+          Sticky viewport container
+          Stays fixed while scrolling through outer container
+          This is what creates the scroll-scrubbing effect
+        */}
+        <div className="sticky top-0 w-full h-screen overflow-hidden bg-black">
+          {/* Canvas background - renders animation frames */}
+          <canvas
+            ref={canvasRef}
+            className="absolute inset-0 w-full h-full block"
+            style={{ imageRendering: "auto" }}
+          />
+
+          {/* Dark overlay for text readability */}
+          <div
+            className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/40 pointer-events-none"
+            style={{ zIndex: 1 }}
+          />
+
+          {/* Loading state */}
+          {!isLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center z-20 bg-black">
+              <p className="text-white/50 font-dm text-sm tracking-wide">
+                Loading...
+              </p>
+            </div>
+          )}
+
+          {/* Centered overlay content */}
+          <div
+            className={`absolute inset-0 flex flex-col items-center justify-center text-center px-6 transition-opacity duration-700 z-10 ${
+              isLoaded ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {/* Main heading */}
+            <h1
+              className="font-playfair font-bold text-white leading-tight mb-4"
+              style={{
+                fontSize: "clamp(48px, 10vw, 96px)",
+                textShadow: "0 2px 20px rgba(0,0,0,0.5)",
+              }}
+            >
+              Explore Everywhere
+            </h1>
+
+            {/* Subtext */}
+            <p
+              className="font-dm text-white/90 max-w-xl leading-relaxed mb-8"
+              style={{
+                fontSize: "clamp(16px, 2.5vw, 20px)",
+                textShadow: "0 1px 10px rgba(0,0,0,0.5)",
+              }}
+            >
+              From the backwaters of Kerala to the peaks of Kashmir
+            </p>
+
+            {/* CTA Button */}
+            <a
+              href="/destinations"
+              className="bg-white hover:bg-white/95 text-[#003060] font-dm font-semibold px-10 py-4 rounded-full transition-all duration-300 min-h-[52px] flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105"
+              style={{
+                fontSize: "clamp(14px, 2vw, 16px)",
+              }}
+            >
+              Plan Your Trip
+              <ChevronDown size={18} className="-rotate-90" />
+            </a>
           </div>
-        )}
 
-        {/* Canvas for frame rendering */}
-        <canvas
-          ref={canvasRef}
-          className="w-full h-full block"
-          style={{ imageRendering: "auto" }}
-        />
-
-        {/* Overlay content */}
-        <div
-          className={`absolute inset-0 flex flex-col items-center justify-center text-center px-4 transition-opacity duration-500 ${
-            isLoaded ? "opacity-100" : "opacity-0"
-          }`}
-          style={{ zIndex: 10 }}
-        >
-          <h1
-            className="font-playfair font-bold text-white leading-[1.05] mb-5"
-            style={{ fontSize: "clamp(42px, 8vw, 88px)" }}
+          {/* Scroll indicator */}
+          <div
+            className={`absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 transition-opacity duration-700 ${
+              isLoaded ? "opacity-100" : "opacity-0"
+            }`}
           >
-            Explore Everywhere
-          </h1>
-
-          <p className="font-dm text-white/80 text-base sm:text-lg md:text-xl max-w-xl leading-relaxed mb-10">
-            From the backwaters of Kerala to the peaks of Kashmir
-          </p>
-
-          <a
-            href="/destinations"
-            className="bg-white hover:bg-white/90 text-[#003060] font-dm font-semibold px-8 py-3 rounded-full transition-colors duration-200 min-h-[44px] flex items-center"
-          >
-            Plan Your Trip →
-          </a>
-        </div>
-
-        {/* Scroll indicator */}
-        <div
-          className={`absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 transition-opacity duration-500 ${
-            isLoaded ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <div className="animate-bounce">
-            <ChevronDown size={28} className="text-white/60" />
+            <span className="text-white/60 text-xs tracking-widest uppercase font-dm">
+              Scroll to explore
+            </span>
+            <div className="animate-bounce">
+              <ChevronDown size={32} className="text-white/70" />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
