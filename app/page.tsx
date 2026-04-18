@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { MessageCircle, ArrowRight } from "lucide-react";
-import HeroSection from "@/components/blocks/hero-section";
+import ScrollAnimation from "@/components/blocks/scroll-animation";
 import DestinationCard from "@/components/blocks/destination-card";
 import PackageCard from "@/components/blocks/package-card";
 import Testimonials from "@/components/blocks/testimonials";
@@ -19,7 +19,7 @@ export default function HomePage() {
 
   return (
     <div className="page-wrapper">
-      <HeroSection />
+      <ScrollAnimation />
 
       {/* ─── FEATURED DESTINATIONS ─── */}
       <section className="py-20 bg-white overflow-hidden">

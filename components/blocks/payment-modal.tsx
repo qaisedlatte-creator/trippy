@@ -191,7 +191,7 @@ export default function PaymentModal({ pkg, open, onClose }: Props) {
                   <label className="font-dm text-sm font-medium text-gray-700 block mb-2">Phone</label>
                   <Input
                     type="tel"
-                    placeholder="+91 9876543210"
+                    placeholder="+91 8592803525"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     className="font-dm border-gray-200"
