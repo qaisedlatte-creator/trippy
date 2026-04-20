@@ -14,17 +14,8 @@ const links = [
 ];
 
 export default function Navbar() {
-  const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-
-  useEffect(() => {
-    const onScroll = () => {
-      setVisible(window.scrollY > 80);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     setOpen(false);
@@ -32,11 +23,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          visible ? "translate-y-0 bg-[#003060]/90 backdrop-blur-md shadow-md" : "-translate-y-full"
-        }`}
-      >
+      <nav className="fixed top-0 w-full z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="group">

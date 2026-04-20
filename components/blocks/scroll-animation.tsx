@@ -192,11 +192,12 @@ export default function ScrollAnimation({
 
     if (!ctx) return;
 
-    // Get smoothed frame index
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+
     const frameIndex = Math.round(currentFrameRef.current);
     const clampedIndex = Math.max(0, Math.min(totalFrames - 1, frameIndex));
 
-    // Clear and draw
     const dpr = window.devicePixelRatio || 1;
     const width = canvas.width / dpr;
     const height = canvas.height / dpr;
@@ -229,26 +230,22 @@ export default function ScrollAnimation({
     rafRef.current = requestAnimationFrame(animate);
   }, [isLoaded, getScrollProgress, totalFrames, renderToCanvas]);
 
-  /**
-   * Handle canvas resize - set internal resolution to match display
-   * Accounts for device pixel ratio (Retina displays)
-   */
   const handleResize = useCallback(() => {
     const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas || !container) return;
+    if (!canvas) return;
 
     const dpr = window.devicePixelRatio || 1;
-    const rect = container.getBoundingClientRect();
+    const w = window.innerWidth;
+    const h = window.innerHeight;
 
-    // Set actual canvas buffer size
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
 
-    // Scale context to match
     const ctx = canvas.getContext("2d");
     if (ctx) {
-      ctx.scale(dpr, dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
     }
   }, []);
 
