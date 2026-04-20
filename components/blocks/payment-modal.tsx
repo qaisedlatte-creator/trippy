@@ -56,7 +56,7 @@ export default function PaymentModal({ pkg, open, onClose }: Props) {
         key: "rzp_test_XXXX", // REPLACE WITH LIVE KEY
         amount: total * 100,
         currency: "INR",
-        name: "Trippy Travel",
+        name: "Trip Scanner",
         description: `${pkg.name} — ${travelers} Traveler(s)`,
         order_id: data.id,
         handler: () => {

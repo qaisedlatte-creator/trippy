@@ -34,14 +34,14 @@ export default function Navbar() {
     <>
       <nav
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          visible ? "translate-y-0" : "-translate-y-full"
+          visible ? "translate-y-0 bg-[#003060]/90 backdrop-blur-md shadow-md" : "-translate-y-full"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="group">
             <span className="font-playfair text-xl font-bold text-white tracking-wide">
-              Trippy
+              Trip Scanner
             </span>
           </Link>
 
@@ -69,7 +69,7 @@ export default function Navbar() {
           {/* CTA buttons */}
           <div className="hidden md:flex items-center gap-3">
             <a
-              href="https://wa.me/918592803525" // REPLACE WITH REAL NUMBER
+              href="https://wa.me/917025506147" // REPLACE WITH REAL NUMBER
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-white border border-white/50 hover:border-white px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 hover:bg-white/10"
@@ -107,7 +107,7 @@ export default function Navbar() {
             className="fixed inset-0 z-[100] bg-[#003060] flex flex-col"
           >
             <div className="flex items-center justify-between px-6 py-5">
-              <span className="font-playfair text-2xl font-bold text-white">Trippy</span>
+              <span className="font-playfair text-2xl font-bold text-white">Trip Scanner</span>
               <button onClick={() => setOpen(false)} className="text-white">
                 <X size={26} />
               </button>
@@ -137,7 +137,7 @@ export default function Navbar() {
                 className="mt-4"
               >
                 <a
-                  href="https://wa.me/918592803525" // REPLACE WITH REAL NUMBER
+                  href="https://wa.me/917025506147" // REPLACE WITH REAL NUMBER
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-white border border-white/40 px-5 py-2.5 rounded-lg text-base min-h-[44px]"

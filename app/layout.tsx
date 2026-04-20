@@ -28,12 +28,12 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Trippy — Kerala's Gateway to the World",
+  title: "Trip Scanner — Kerala's Gateway to the World",
   description:
     "Kerala-based travel agency specializing in domestic and international tours. Explore Kashmir, Bali, Maldives, Thailand & more from Kerala.",
   keywords: "travel agency kerala, kerala tour packages, international tours from kerala, bali tour, kashmir tour",
   openGraph: {
-    title: "Trippy — Kerala's Gateway to the World",
+    title: "Trip Scanner — Kerala's Gateway to the World",
     description: "From the backwaters of Kerala to the beaches of Bali",
     type: "website",
   },

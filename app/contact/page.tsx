@@ -113,7 +113,7 @@ export default function ContactPage() {
                     <Input
                       type="tel"
                       name="phone"
-                      placeholder="+91 8592803525"
+                      placeholder="+91 70255 06147"
                       value={form.phone}
                       onChange={handleChange}
                       className="font-dm border-gray-200"
@@ -208,13 +208,13 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <a
-                  href="https://wa.me/918592803525?text=Hi! I'd like to enquire about a trip." // REPLACE WITH REAL NUMBER
+                  href="https://wa.me/917025506147?text=Hi! I'd like to enquire about a trip." // REPLACE WITH REAL NUMBER
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 w-full bg-green-500 hover:bg-green-400 text-white font-dm font-medium py-2.5 rounded-xl transition-colors duration-200 text-sm"
                 >
                   <MessageCircle size={16} />
-                  +91 85928 03525{/* REPLACE WITH REAL NUMBER */}
+                  +91 70255 06147{/* REPLACE WITH REAL NUMBER */}
                 </a>
               </div>
 
@@ -227,10 +227,10 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-playfair text-base font-semibold text-[#003060] mb-1">Email Us</h3>
                     <a
-                      href="mailto:hello@trippy.in" // REPLACE WITH REAL EMAIL
+                      href="mailto:tripscanner@gmail.com" // REPLACE WITH REAL EMAIL
                       className="font-dm text-sm text-[#2571BC] hover:underline"
                     >
-                      hello@trippy.in{/* REPLACE WITH REAL EMAIL */}
+                      tripscanner@gmail.com{/* REPLACE WITH REAL EMAIL */}
                     </a>
                     <p className="font-dm text-xs text-gray-400 mt-1">We respond within 24 hours</p>
                   </div>
@@ -246,10 +246,10 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-playfair text-base font-semibold text-[#003060] mb-1">Call Us</h3>
                     <a
-                      href="tel:+918592803525" // REPLACE WITH REAL NUMBER
+                      href="tel:+917025506147" // REPLACE WITH REAL NUMBER
                       className="font-dm text-sm text-[#2571BC] hover:underline"
                     >
-                      +91 85928 03525{/* REPLACE WITH REAL NUMBER */}
+                      +91 70255 06147{/* REPLACE WITH REAL NUMBER */}
                     </a>
                     <p className="font-dm text-xs text-gray-400 mt-1">Mon–Sat, 9am–8pm IST</p>
                   </div>
@@ -265,7 +265,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-playfair text-base font-semibold text-[#003060] mb-1">Visit Us</h3>
                     <p className="font-dm text-sm text-gray-600 leading-relaxed">
-                      Trippy Travel<br />
+                      Trip Scanner<br />
                       Kochi, Kerala, India — 682 001
                     </p>
                   </div>

@@ -160,7 +160,7 @@ export const destinations: Destination[] = [
     itinerary: [
       { day: 1, title: "Arrive in Manali", description: "Fly to Delhi, overnight bus or fly to Bhuntar/Kullu. Arrive Manali. Check in. Evening walk along Mall Road. Explore Old Manali cafes." },
       { day: 2, title: "Solang Valley", description: "Morning drive to Solang Valley for paragliding, zorbing, and rope activities. Afternoon Hadimba Devi Temple visit. Evening relaxation." },
-      { day: 3, title: "Rohtang Pass", description: "Full day excursion to Rohtang Pass (3,978m) — snow-covered landscapes, yak rides, and panoramic Himalayan views. *Permits required — arranged by Trippy." },
+      { day: 3, title: "Rohtang Pass", description: "Full day excursion to Rohtang Pass (3,978m) — snow-covered landscapes, yak rides, and panoramic Himalayan views. *Permits required — arranged by Trip Scanner." },
       { day: 4, title: "Kasol & Kheerganga", description: "Drive to Kasol village — the little Israel of India. Short hike to riverside camps. Evening around the campfire." },
       { day: 5, title: "Vashisht & Old Manali", description: "Morning dip in Vashisht hot springs. Explore Buddhist monasteries in Old Manali. Shopping for Kullu shawls and mountain gear." },
       { day: 6, title: "Departure", description: "Transfer to Bhuntar Airport or Volvo bus to Delhi for onward flight to Kerala." },
@@ -232,7 +232,7 @@ export const destinations: Destination[] = [
     image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80",
     heroImage: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=1920&q=90",
     tagline: "Pure Ocean Luxury",
-    description: "The Maldives is the world's most ultimate escape — 1,200 coral islands scattered across the Indian Ocean, each one a perfect crescent of white sand and turquoise water. Overwater bungalows, bioluminescent beaches, and the most biodiverse coral reefs on Earth make this the definition of luxury. Trippy specialises in getting Kerala travelers here without the usual luxury agency markup.",
+    description: "The Maldives is the world's most ultimate escape — 1,200 coral islands scattered across the Indian Ocean, each one a perfect crescent of white sand and turquoise water. Overwater bungalows, bioluminescent beaches, and the most biodiverse coral reefs on Earth make this the definition of luxury. Trip Scanner specialises in getting Kerala travelers here without the usual luxury agency markup.",
     bestTime: "November – April",
     duration: "4–6 Days",
     type_label: "Luxury Beach",

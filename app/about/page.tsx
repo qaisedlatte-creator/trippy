@@ -62,7 +62,7 @@ export default function AboutPage() {
             transition={{ delay: 0.1 }}
             className="font-playfair text-4xl md:text-6xl font-bold text-white"
           >
-            About Trippy
+            About Trip Scanner
           </motion.h1>
         </div>
       </div>
@@ -85,7 +85,7 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-4 font-dm text-gray-600 leading-relaxed">
                 <p>
-                  Trippy was born from a simple frustration: Kerala travelers were paying too much
+                  Trip Scanner was born from a simple frustration: Kerala travelers were paying too much
                   for international trips, or settling for generic domestic packages that felt
                   copy-pasted from a brochure. We started with one goal — build a Kerala-native
                   travel agency that genuinely understood where its customers were coming from,
@@ -137,7 +137,7 @@ export default function AboutPage() {
       <section className="bg-[#f7f9fc] py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
-            <p className="section-label mb-2">The People Behind Trippy</p>
+            <p className="section-label mb-2">The People Behind Trip Scanner</p>
             <h2 className="font-playfair text-3xl md:text-4xl font-bold text-[#003060]">
               Meet the Team
             </h2>

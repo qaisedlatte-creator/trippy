@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     // const order = await instance.orders.create({
     //   amount: amount * 100, // in paise
     //   currency: "INR",
-    //   receipt: `trippy_${Date.now()}`,
+    //   receipt: `tripscanner_${Date.now()}`,
     //   notes: { packageName },
     // });
     // return NextResponse.json(order);
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       amount: amount * 100,
       currency: "INR",
       status: "created",
-      receipt: `trippy_${Date.now()}`,
+      receipt: `tripscanner_${Date.now()}`,
       notes: { packageName },
     });
   } catch (error) {

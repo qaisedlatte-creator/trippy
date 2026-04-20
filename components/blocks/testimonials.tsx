@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const allTestimonials = [
   {
-    text: "Trippy made our Kashmir trip absolutely magical. The houseboat on Dal Lake was unforgettable.",
+    text: "Trip Scanner made our Kashmir trip absolutely magical. The houseboat on Dal Lake was unforgettable.",
     name: "Rahul Menon",
     location: "Dubai, UAE",
     package: "Kashmir Snow Escape",
@@ -24,7 +24,7 @@ const allTestimonials = [
     rating: 5,
   },
   {
-    text: "Thailand trip was flawless. Trippy handled everything — flights, hotels, and transfers.",
+    text: "Thailand trip was flawless. Trip Scanner handled everything — flights, hotels, and transfers.",
     name: "Fathima Nair",
     location: "Kozhikode",
     package: "Thailand Adventure",
@@ -45,7 +45,7 @@ const allTestimonials = [
     rating: 5,
   },
   {
-    text: "Vietnam in 8 days — Ha Long Bay, Hoi An, Ho Chi Minh. Trippy nailed every single detail.",
+    text: "Vietnam in 8 days — Ha Long Bay, Hoi An, Ho Chi Minh. Trip Scanner nailed every single detail.",
     name: "Mohammed Shafeeq",
     location: "Calicut",
     package: "Vietnam Explorer",

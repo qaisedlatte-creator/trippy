@@ -74,7 +74,7 @@ export default function HomePage() {
               <h2 className="font-playfair text-3xl md:text-4xl font-bold text-[#003060] leading-snug">
                 Why Thousands Choose
                 <br />
-                <span className="italic text-[#003060]">Trippy</span>
+                <span className="italic text-[#003060]">Trip Scanner</span>
               </h2>
               <p className="font-dm text-gray-600 leading-relaxed text-base max-w-lg">
                 We&apos;re a Kerala-born travel agency with deep local expertise and
@@ -208,7 +208,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a
-              href="https://wa.me/918592803525" // REPLACE WITH REAL NUMBER
+              href="https://wa.me/917025506147" // REPLACE WITH REAL NUMBER
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 bg-green-500 hover:bg-green-400 text-white font-dm font-medium px-7 py-3 rounded-xl transition-colors min-h-[44px]"

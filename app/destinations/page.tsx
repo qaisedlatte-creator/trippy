@@ -164,7 +164,7 @@ export default function DestinationsPage() {
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <a
-            href="https://wa.me/918592803525" // REPLACE WITH REAL NUMBER
+            href="https://wa.me/917025506147" // REPLACE WITH REAL NUMBER
             target="_blank"
             rel="noopener noreferrer"
             className="bg-[#003060] hover:bg-[#2571BC] text-white font-dm font-medium px-7 py-3 rounded-xl transition-colors duration-200"

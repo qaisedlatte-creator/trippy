@@ -12,7 +12,7 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="inline-block bg-white/10 px-4 py-2 rounded-lg">
               <span className="font-playfair text-2xl font-bold text-white">
-                Tr<span className="text-[#FFB03A]">i</span>ppy
+                Trip<span className="text-[#FFB03A]"> Scanner</span>
               </span>
             </div>
             <p className="font-playfair text-lg text-white/80 italic leading-snug">
@@ -41,7 +41,7 @@ export default function Footer() {
                 <FacebookIcon size={16} />
               </a>
               <a
-                href="https://wa.me/918592803525" // REPLACE WITH REAL NUMBER
+                href="https://wa.me/917025506147" // REPLACE WITH REAL NUMBER
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-green-400 hover:text-white transition-all duration-200"
@@ -78,7 +78,7 @@ export default function Footer() {
                 { href: "/", label: "Home" },
                 { href: "/destinations", label: "All Destinations" },
                 { href: "/packages", label: "Packages" },
-                { href: "/about", label: "About Trippy" },
+                { href: "/about", label: "About Trip Scanner" },
                 { href: "/contact", label: "Contact Us" },
                 { href: "/contact", label: "Privacy Policy" },
               ].map((l) => (
@@ -101,25 +101,25 @@ export default function Footer() {
             <ul className="space-y-4">
               <li>
                 <a
-                  href="https://wa.me/918592803525" // REPLACE WITH REAL NUMBER
+                  href="https://wa.me/917025506147" // REPLACE WITH REAL NUMBER
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-start gap-3 group"
                 >
                   <Phone size={16} className="text-[#2571BC] mt-0.5 shrink-0" />
                   <span className="font-dm text-sm text-white/60 group-hover:text-white transition-colors">
-                    +91 85928 03525{/* REPLACE WITH REAL NUMBER */}
+                    +91 70255 06147{/* REPLACE WITH REAL NUMBER */}
                   </span>
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:hello@trippy.in" // REPLACE WITH REAL EMAIL
+                  href="mailto:tripscanner@gmail.com" // REPLACE WITH REAL EMAIL
                   className="flex items-start gap-3 group"
                 >
                   <Mail size={16} className="text-[#2571BC] mt-0.5 shrink-0" />
                   <span className="font-dm text-sm text-white/60 group-hover:text-white transition-colors">
-                    hello@trippy.in{/* REPLACE WITH REAL EMAIL */}
+                    tripscanner@gmail.com{/* REPLACE WITH REAL EMAIL */}
                   </span>
                 </a>
               </li>
@@ -138,7 +138,7 @@ export default function Footer() {
       <div className="border-t border-white/10 bg-[#002050]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="font-dm text-xs text-white/50">
-            © 2025 Trippy Travel. All rights reserved.
+            © 2025 Trip Scanner. All rights reserved.
           </p>
           <p className="font-dm text-xs text-white/50">
             Made in Kerala 🌴

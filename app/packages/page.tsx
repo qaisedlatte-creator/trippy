@@ -87,7 +87,7 @@ export default function PackagesPage() {
             Tell us what you have in mind on WhatsApp.
           </p>
           <a
-            href="https://wa.me/918592803525?text=Hi! I'd like a custom travel package." // REPLACE WITH REAL NUMBER
+            href="https://wa.me/917025506147?text=Hi! I'd like a custom travel package." // REPLACE WITH REAL NUMBER
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-[#003060] hover:bg-[#2571BC] text-white font-dm font-medium px-8 py-3 rounded-xl transition-colors duration-200"

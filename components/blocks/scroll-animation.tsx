@@ -202,8 +202,7 @@ export default function ScrollAnimation({
     const height = canvas.height / dpr;
 
     ctx.clearRect(0, 0, width, height);
-    // Mobile uses cover (portrait frames), desktop uses contain (landscape frames)
-    drawFrame(ctx, framesRef.current[clampedIndex], width, height, isMobile);
+    drawFrame(ctx, framesRef.current[clampedIndex], width, height, true);
   }, [isLoaded, totalFrames, isMobile]);
 
   /**
